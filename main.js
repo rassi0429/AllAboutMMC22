@@ -5,9 +5,7 @@ const app = express()
 
 const recordUrl = "https://api.neos.com/api/records/search"
 const body = { "private": false, "submittedTo": "G-Neos", "recordType": "world", "maxItems": 10, "count": 150, "requiredTags": ["mmc21"] }
-// axios.post(recordUrl, body).then(res => console.log(res.data))
 
-// console.log()
 
 app.get('/world/mmc21', async function (req, res) {
     const { data } = await axios.post(recordUrl, body)
