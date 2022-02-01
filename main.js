@@ -11,13 +11,13 @@ function body(tags) {
 
 app.get('/world/mmc21', async function (req, res) {
     const { data } = await axios.post(recordUrl, body(["mmc21"]))
-    const parsed = data.map(res => { return { "worldRec": `neosrec:///${res.ownerId}/${res.id}`, "thumbnail": res.thumbnailUri, "firstPublishTime": res.firstPublishTime, tags: res.tags } })
+    const parsed = data.map(res => { return { "worldRec": `neosrec:///${res.ownerId}/${res.id}`, "thumbnail": res.thumbnailUri, "firstPublishTime": res.firstPublishTime, tags: res.tags, ownerId: req.ownerId, visits: req.visits } })
     res.send(req.query.json ? parsed : j2e(parsed))
 })
 
 app.get('/world/mmc22', async function (req, res) {
     const { data } = await axios.post(recordUrl, body(["mmc22"]))
-    const parsed = data.map(res => { return { "worldRec": `neosrec:///${res.ownerId}/${res.id}`, "thumbnail": res.thumbnailUri, "firstPublishTime": res.firstPublishTime, tags: res.tags } })
+    const parsed = data.map(res => { return { "worldRec": `neosrec:///${res.ownerId}/${res.id}`, "thumbnail": res.thumbnailUri, "firstPublishTime": res.firstPublishTime, tags: res.tags, ownerId: req.ownerId, visits: req.visits } })
     res.send(req.query.json ? parsed : j2e(parsed))
 })
 
