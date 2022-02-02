@@ -33,19 +33,19 @@ app.get("/a/mmc21", async (req, res) => {
     const { data } = await axios.post(recordUrl, body(["mmc21"]))
     const sorted = _.sortBy(data, "firstPublishTime")
     let result = []
-    console.log(sorted.map(res => formatWorld(res).firstPublishTime))
+    // console.log(sorted.map(res => formatWorld(res).firstPublishTime))
     let startDate = null
     for (let i = 31 - span; i > 0; i -= span) {
         const endDate = new Date(Date.UTC(2021, 8, i + span, 18, 0, 0))
         startDate = new Date(Date.UTC(2021, 8, i, 18, 0, 0))
-        console.log(startDate, endDate)
+        // console.log(startDate, endDate)
         result.push(getEvent21(startDate, endDate, sorted))
     }
     if (startDate.getTime() != new Date(Date.UTC(2021, 8, 1, 18, 0, 0)).getTime()) {
         result.push(getEvent21(new Date(Date.UTC(2021, 8, 1, 18, 0, 0)),startDate, sorted))
     }
-    console.log(result.reverse())
-    res.send(req.query.json ? result.reverse() : j2e(result.reverse()))
+    // console.log(result.reverse())
+    res.send(req.query.json ? result : j2e(result))
 })
 
 
