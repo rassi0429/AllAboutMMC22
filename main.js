@@ -35,14 +35,14 @@ app.get("/a/mmc22", async (req, res) => {
     let result = []
     // console.log(sorted.map(res => formatWorld(res).firstPublishTime))
     let startDate = null
-    for (let i = 31 - span; i > 0; i -= span) {
-        const endDate = new Date(Date.UTC(2022, 1, i + span, 18, 0, 0))
-        startDate = new Date(Date.UTC(2022, 2, i, 18, 0, 0))
+    for (let i = 28 - span; i > 0; i -= span) {
+        const endDate = new Date(Date.UTC(2022, 1, i + span, 19, 0, 0))
+        startDate = new Date(Date.UTC(2022, 1, i, 19, 0, 0))
         // console.log(startDate, endDate)
         result.push(getEvent22(startDate, endDate, sorted))
     }
-    if (startDate.getTime() != new Date(Date.UTC(2022, 1, 1, 18, 0, 0)).getTime()) {
-        result.push(getEvent22(new Date(Date.UTC(2022, 2, 1, 18, 0, 0)), startDate, sorted))
+    if (startDate.getTime() != new Date(Date.UTC(2022, 1, 1, 19, 0, 0)).getTime()) {
+        result.push(getEvent22(new Date(Date.UTC(2022, 1, 1, 19, 0, 0)), startDate, sorted))
     }
     // console.log(result.reverse())
     res.send(req.query.json ? result.reverse() : j2e(result.reverse()))
@@ -57,13 +57,13 @@ app.get("/a/mmc21", async (req, res) => {
     // console.log(sorted.map(res => formatWorld(res).firstPublishTime))
     let startDate = null
     for (let i = 31 - span; i > 0; i -= span) {
-        const endDate = new Date(Date.UTC(2021, 8, i + span, 18, 0, 0))
-        startDate = new Date(Date.UTC(2021, 8, i, 18, 0, 0))
+        const endDate = new Date(Date.UTC(2021, 8, i + span, 19, 0, 0))
+        startDate = new Date(Date.UTC(2021, 8, i, 19, 0, 0))
         // console.log(startDate, endDate)
         result.push(getEvent21(startDate, endDate, sorted))
     }
-    if (startDate.getTime() != new Date(Date.UTC(2021, 8, 1, 18, 0, 0)).getTime()) {
-        result.push(getEvent21(new Date(Date.UTC(2021, 8, 1, 18, 0, 0)), startDate, sorted))
+    if (startDate.getTime() != new Date(Date.UTC(2021, 8, 1, 19, 0, 0)).getTime()) {
+        result.push(getEvent21(new Date(Date.UTC(2021, 8, 1, 19, 0, 0)), startDate, sorted))
     }
     // console.log(result.reverse())
     res.send(req.query.json ? result.reverse() : j2e(result.reverse()))
@@ -78,13 +78,13 @@ app.get("/a/mmc20", async (req, res) => {
     console.log(sorted.map(res => formatWorld(res).firstPublishTime))
     let startDate = null
     for (let i = 31 - span; i > 0; i -= span) {
-        const endDate = new Date(Date.UTC(2020, 8, i + span, 18, 0, 0))
-        startDate = new Date(Date.UTC(2020, 8, i, 18, 0, 0))
+        const endDate = new Date(Date.UTC(2020, 8, i + span, 19, 0, 0))
+        startDate = new Date(Date.UTC(2020, 8, i, 19, 0, 0))
         console.log(startDate, endDate)
         result.push(getEvent20(startDate, endDate, sorted))
     }
-    if (startDate.getTime() != new Date(Date.UTC(2020, 8, 1, 18, 0, 0)).getTime()) {
-        result.push(getEvent20(new Date(Date.UTC(2020, 8, 1, 18, 0, 0)), startDate, sorted))
+    if (startDate.getTime() != new Date(Date.UTC(2020, 8, 1, 19, 0, 0)).getTime()) {
+        result.push(getEvent20(new Date(Date.UTC(2020, 8, 1, 19, 0, 0)), startDate, sorted))
     }
     // console.log(result.reverse())
     res.send(req.query.json ? result.reverse() : j2e(result.reverse()))
@@ -124,6 +124,7 @@ function getEvent22(startDate, endDate, sorted) {
         esd: [],
     }
     sorted.forEach(k => {
+        // console.log(k.tags)
         const firstPublishTime = new Date(k.firstPublishTime)
         if (startDate < firstPublishTime && endDate > firstPublishTime) {
             if (k.tags.includes("world") || k.tags.includes("World")) {
@@ -153,6 +154,7 @@ function getEvent22(startDate, endDate, sorted) {
             } else if (k.tags.includes("art") || k.tags.includes("Art")) {
                 template.art.push(k)
             } else if (k.tags.includes("esd") || k.tags.includes("Esd") || k.tags.includes("ESD")) {
+                
                 template.esd.push(k)
             }
         }
