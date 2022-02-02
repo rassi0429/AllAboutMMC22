@@ -45,7 +45,7 @@ app.get("/a/mmc21", async (req, res) => {
         result.push(getEvent21(new Date(Date.UTC(2021, 8, 1, 18, 0, 0)),startDate, sorted))
     }
     // console.log(result.reverse())
-    res.send(req.query.json ? result : j2e(result))
+    res.send(req.query.json ? result.reverse() : j2e(result.reverse()))
 })
 
 
