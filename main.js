@@ -28,6 +28,27 @@ app.get('/world/mmc20', async function (req, res) {
     res.send(req.query.json ? parsed : j2e(parsed))
 })
 
+app.get("/a/mmc22", async (req, res) => {
+    const span = Number(req.query.span) || 7
+    const { data } = await axios.post(recordUrl, body(["mmc22"]))
+    const sorted = _.sortBy(data, "firstPublishTime")
+    let result = []
+    // console.log(sorted.map(res => formatWorld(res).firstPublishTime))
+    let startDate = null
+    for (let i = 31 - span; i > 0; i -= span) {
+        const endDate = new Date(Date.UTC(2022, 1, i + span, 18, 0, 0))
+        startDate = new Date(Date.UTC(2022, 2, i, 18, 0, 0))
+        // console.log(startDate, endDate)
+        result.push(getEvent22(startDate, endDate, sorted))
+    }
+    if (startDate.getTime() != new Date(Date.UTC(2022, 1, 1, 18, 0, 0)).getTime()) {
+        result.push(getEvent22(new Date(Date.UTC(2022, 2, 1, 18, 0, 0)), startDate, sorted))
+    }
+    // console.log(result.reverse())
+    res.send(req.query.json ? result.reverse() : j2e(result.reverse()))
+})
+
+
 app.get("/a/mmc21", async (req, res) => {
     const span = Number(req.query.span) || 7
     const { data } = await axios.post(recordUrl, body(["mmc21"]))
@@ -81,10 +102,62 @@ function formatWorld(res) {
         "firstPublishTime": res.firstPublishTime,
         "tags": res.tags,
         "ownerId": res.ownerId,
+        "ownerName": res.ownerName,
         "visits": res.visits,
         "name": res.name,
         "description": res.description
     }
+}
+
+function getEvent22(startDate, endDate, sorted) {
+    let template = {
+        world_social: [],
+        world_game: [],
+        world_misc: [],
+        avatar_avatars: [],
+        avatar_accessories: [],
+        avatar_misc: [],
+        other_tau: [],
+        other_misc: [],
+        meme: [],
+        art: [],
+        esd: [],
+    }
+    sorted.forEach(k => {
+        const firstPublishTime = new Date(k.firstPublishTime)
+        if (startDate < firstPublishTime && endDate > firstPublishTime) {
+            if (k.tags.includes("world") || k.tags.includes("World")) {
+                if (k.tags.includes("social") || k.tags.includes("Social")) {
+                    template.world_social.push(k)
+                } else if (k.tags.includes("game") || k.tags.includes("Game")) {
+                    template.world_game.push(k)
+                } else if (k.tags.includes("misc") || k.tags.includes("Misc")) {
+                    template.world_misc.push(k)
+                }
+            } else if (k.tags.includes("avatar") || k.tags.includes("Avatar")) {
+                if (k.tags.includes("avatars") || k.tags.includes("Avatars")) {
+                    template.avatar_avatars.push(k)
+                } else if (k.tags.includes("accessories") || k.tags.includes("Accessories")) {
+                    template.avatar_accessories.push(k)
+                } else if (k.tags.includes("misc") || k.tags.includes("Misc")) {
+                    template.avatar_misc.push(k)
+                }
+            } else if (k.tags.includes("other") || k.tags.includes("Other")) {
+                if (k.tags.includes("tau") || k.tags.includes("TAU")) {
+                    template.other_tau.push(k)
+                } else if (k.tags.includes("misc") || k.tags.includes("Misc")) {
+                    template.other_misc.push(k)
+                }
+            } else if (k.tags.includes("meme") || k.tags.includes("Meme")) {
+                template.meme.push(k)
+            } else if (k.tags.includes("art") || k.tags.includes("Art")) {
+                template.art.push(k)
+            } else if (k.tags.includes("esd") || k.tags.includes("Esd") || k.tags.includes("ESD")) {
+                template.esd.push(k)
+            }
+        }
+    })
+    return template
 }
 
 function getEvent21(startDate, endDate, sorted) {
@@ -131,7 +204,6 @@ function getEvent21(startDate, endDate, sorted) {
     })
     return template
 }
-
 
 function getEvent20(startDate, endDate, sorted) {
     let template = {
