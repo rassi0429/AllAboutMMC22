@@ -31,7 +31,8 @@ app.get('/world/mmc20', async function (req, res) {
 app.get("/a/mmc22", async (req, res) => {
     const span = Number(req.query.span) || 7
     const { data } = await axios.post(recordUrl, body(["mmc22"]))
-    const sorted = _.sortBy(data, "firstPublishTime")
+    let sorted = _.sortBy(data, "firstPublishTime")
+    sorted = sorted.map(i => formatWorld(i))
     let result = []
     // console.log(sorted.map(res => formatWorld(res).firstPublishTime))
     let startDate = null
@@ -44,7 +45,6 @@ app.get("/a/mmc22", async (req, res) => {
     if (startDate.getTime() != new Date(Date.UTC(2022, 1, 1, 19, 0, 0)).getTime()) {
         result.push(getEvent22(new Date(Date.UTC(2022, 1, 1, 19, 0, 0)), startDate, sorted))
     }
-    result = result.map(i => formatWorld(i))
     // console.log(result.reverse())
     res.send(req.query.json ? result.reverse() : j2e(result.reverse()))
 })
@@ -53,7 +53,8 @@ app.get("/a/mmc22", async (req, res) => {
 app.get("/a/mmc21", async (req, res) => {
     const span = Number(req.query.span) || 7
     const { data } = await axios.post(recordUrl, body(["mmc21"]))
-    const sorted = _.sortBy(data, "firstPublishTime")
+    let sorted = _.sortBy(data, "firstPublishTime")
+    sorted = sorted.map(i => formatWorld(i))
     let result = []
     // console.log(sorted.map(res => formatWorld(res).firstPublishTime))
     let startDate = null
@@ -67,7 +68,6 @@ app.get("/a/mmc21", async (req, res) => {
         result.push(getEvent21(new Date(Date.UTC(2021, 8, 1, 19, 0, 0)), startDate, sorted))
     }
     // console.log(result.reverse())
-    result = result.map(i => formatWorld(i))
     res.send(req.query.json ? result.reverse() : j2e(result.reverse()))
 })
 
@@ -75,7 +75,8 @@ app.get("/a/mmc21", async (req, res) => {
 app.get("/a/mmc20", async (req, res) => {
     const span = Number(req.query.span) || 7
     const { data } = await axios.post(recordUrl, { "private": false, "submittedTo": "G-Neos", "recordType": "world", "maxItems": 10, "count": 150, "requiredTags": ["mmc"], "maxDate": "2020-10-03T00:00:00Z" })
-    const sorted = _.sortBy(data, "firstPublishTime")
+    let sorted = _.sortBy(data, "firstPublishTime")
+    sorted = sorted.map(i => formatWorld(i))
     let result = []
     console.log(sorted.map(res => formatWorld(res).firstPublishTime))
     let startDate = null
@@ -89,7 +90,6 @@ app.get("/a/mmc20", async (req, res) => {
         result.push(getEvent20(new Date(Date.UTC(2020, 8, 1, 19, 0, 0)), startDate, sorted))
     }
     // console.log(result.reverse())
-    result = result.map(i => formatWorld(i))
     res.send(req.query.json ? result.reverse() : j2e(result.reverse()))
 })
 
