@@ -44,6 +44,7 @@ app.get("/a/mmc22", async (req, res) => {
     if (startDate.getTime() != new Date(Date.UTC(2022, 1, 1, 19, 0, 0)).getTime()) {
         result.push(getEvent22(new Date(Date.UTC(2022, 1, 1, 19, 0, 0)), startDate, sorted))
     }
+    result = result.map(i => formatWorld(i))
     // console.log(result.reverse())
     res.send(req.query.json ? result.reverse() : j2e(result.reverse()))
 })
@@ -66,6 +67,7 @@ app.get("/a/mmc21", async (req, res) => {
         result.push(getEvent21(new Date(Date.UTC(2021, 8, 1, 19, 0, 0)), startDate, sorted))
     }
     // console.log(result.reverse())
+    result = result.map(i => formatWorld(i))
     res.send(req.query.json ? result.reverse() : j2e(result.reverse()))
 })
 
@@ -87,6 +89,7 @@ app.get("/a/mmc20", async (req, res) => {
         result.push(getEvent20(new Date(Date.UTC(2020, 8, 1, 19, 0, 0)), startDate, sorted))
     }
     // console.log(result.reverse())
+    result = result.map(i => formatWorld(i))
     res.send(req.query.json ? result.reverse() : j2e(result.reverse()))
 })
 
