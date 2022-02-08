@@ -12,19 +12,19 @@ function body(tags) {
 
 app.get('/world/mmc21', async function (req, res) {
     const { data } = await axios.post(recordUrl, body(["mmc21"]))
-    const parsed = data.map(res => formatWorld(res))
+    const parsed = data.map(res => addGenre22(formatWorld(res)))
     res.send(req.query.json ? parsed : j2e(parsed))
 })
 
 app.get('/world/mmc22', async function (req, res) {
     const { data } = await axios.post(recordUrl, body(["mmc22"]))
-    const parsed = data.map(res => formatWorld(res))
+    const parsed = data.map(res => addGenre22(formatWorld(res)))
     res.send(req.query.json ? parsed : j2e(parsed))
 })
 
 app.get('/world/mmc20', async function (req, res) {
     const { data } = await axios.post(recordUrl, { "private": false, "submittedTo": "G-Neos", "recordType": "world", "maxItems": 10, "count": 150, "requiredTags": ["mmc"], "maxDate": "2020-10-03T00:00:00Z" })
-    const parsed = data.map(res => formatWorld(res))
+    const parsed = data.map(res => addGenre20(formatWorld(res)))
     res.send(req.query.json ? parsed : j2e(parsed))
 })
 
@@ -112,6 +112,50 @@ function formatWorld(res) {
     }
 }
 
+function addGenre22(k) {
+    if (k.tags.includes("world") || k.tags.includes("World")) {
+        if (k.tags.includes("social") || k.tags.includes("Social")) {
+            k.genre = "world_social"
+        } else if (k.tags.includes("game") || k.tags.includes("Game")) {
+            k.genre = "world_game"
+        } else if (k.tags.includes("misc") || k.tags.includes("Misc")) {
+            k.genre = "world_misc"
+        }
+    } else if (k.tags.includes("avatar") || k.tags.includes("Avatar")) {
+        if (k.tags.includes("avatars") || k.tags.includes("Avatars")) {
+            k.genre = "avatar_avatars"
+        } else if (k.tags.includes("accessories") || k.tags.includes("Accessories")) {
+            k.genre = "avatar_accessories"
+        } else if (k.tags.includes("misc") || k.tags.includes("Misc")) {
+            k.genre = "avatar_misc"
+        }
+    } else if (k.tags.includes("other") || k.tags.includes("Other")) {
+        if (k.tags.includes("tau") || k.tags.includes("TAU")) {
+            k.genre = "other_tau"
+        } else if (k.tags.includes("misc") || k.tags.includes("Misc")) {
+            k.genre = "other_misc"
+        }
+    } else if (k.tags.includes("meme") || k.tags.includes("Meme")) {
+        k.genre = "meme"
+    } else if (k.tags.includes("art") || k.tags.includes("Art")) {
+        k.genre = "art"
+    } else if (k.tags.includes("esd") || k.tags.includes("Esd") || k.tags.includes("ESD")) {
+        k.genre = "esd"
+    }
+    return k
+}
+
+function addGenre20(k) {
+    if (k.tags.includes("world") || k.tags.includes("World")) {
+        k.genre = "world"
+    } else if (k.tags.includes("avatar") || k.tags.includes("Avatar")) {
+        k.genre = "avatar"
+    } else if (k.tags.includes("other") || k.tags.includes("Other")) {
+        k.genre = "other"
+    }
+    return k
+}
+
 function getEvent22(startDate, endDate, sorted) {
     let template = {
         world_social: [],
@@ -157,7 +201,7 @@ function getEvent22(startDate, endDate, sorted) {
             } else if (k.tags.includes("art") || k.tags.includes("Art")) {
                 template.art.push(k)
             } else if (k.tags.includes("esd") || k.tags.includes("Esd") || k.tags.includes("ESD")) {
-                
+
                 template.esd.push(k)
             }
         }
