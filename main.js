@@ -36,7 +36,7 @@ app.get("/a/mmc22", async (req, res) => {
     let result = []
     // console.log(sorted.map(res => formatWorld(res).firstPublishTime))
     let startDate = null
-    for (let i = 28 - span; i > 0; i -= span) {
+    for (let i = 30 - span; i > 0; i -= span) {
         const endDate = new Date(Date.UTC(2022, 1, i + span, 19, 0, 0))
         startDate = new Date(Date.UTC(2022, 1, i, 19, 0, 0))
         // console.log(startDate, endDate)
