@@ -6,7 +6,7 @@ const app = express()
 
 const recordUrl = "https://api.neos.com/api/records/search"
 function body(tags) {
-    return { "private": false, "submittedTo": "G-Neos", "recordType": "world", "maxItems": 10, "count": 190, "requiredTags": tags }
+    return { "private": false, "submittedTo": "G-Neos", "recordType": "world", "maxItems": 10, "count": 197, "requiredTags": tags }
 }
 
 
@@ -23,7 +23,7 @@ app.get('/world/mmc22', async function (req, res) {
 })
 
 app.get('/world/mmc20', async function (req, res) {
-    const { data } = await axios.post(recordUrl, { "private": false, "submittedTo": "G-Neos", "recordType": "world", "maxItems": 10, "count": 190, "requiredTags": ["mmc"], "maxDate": "2020-10-03T00:00:00Z" })
+    const { data } = await axios.post(recordUrl, { "private": false, "submittedTo": "G-Neos", "recordType": "world", "maxItems": 10, "count": 197, "requiredTags": ["mmc"], "maxDate": "2020-10-03T00:00:00Z" })
     const parsed = data.map(res => addGenre20(formatWorld(res)))
     res.send(req.query.json ? parsed : j2e(parsed))
 })
@@ -74,7 +74,7 @@ app.get("/a/mmc21", async (req, res) => {
 
 app.get("/a/mmc20", async (req, res) => {
     const span = Number(req.query.span) || 7
-    const { data } = await axios.post(recordUrl, { "private": false, "submittedTo": "G-Neos", "recordType": "world", "maxItems": 10, "count": 190, "requiredTags": ["mmc"], "maxDate": "2020-10-03T00:00:00Z" })
+    const { data } = await axios.post(recordUrl, { "private": false, "submittedTo": "G-Neos", "recordType": "world", "maxItems": 10, "count": 197, "requiredTags": ["mmc"], "maxDate": "2020-10-03T00:00:00Z" })
     let sorted = _.sortBy(data, "firstPublishTime")
     sorted = sorted.map(i => formatWorld(i))
     let result = []
