@@ -39,7 +39,7 @@ app.get("/a/mmc22", async (req, res) => {
     for (let i = 29 - span; i > 0; i -= span) {
         const endDate = new Date(Date.UTC(2022, 1, i + span, 19, 0, 0))
         startDate = new Date(Date.UTC(2022, 1, i, 19, 0, 0))
-        // console.log(startDate, endDate)
+        // console.log(getEvent22(startDate, endDate, sorted))
         result.push(getEvent22(startDate, endDate, sorted))
     }
     if (startDate.getTime() != new Date(Date.UTC(2022, 1, 1, 19, 0, 0)).getTime()) {
@@ -173,36 +173,59 @@ function getEvent22(startDate, endDate, sorted) {
     sorted.forEach(k => {
         // console.log(k.tags)
         const firstPublishTime = new Date(k.firstPublishTime)
+        if(k.name.startsWith("sketch")) {
+            console.log (startDate < firstPublishTime && endDate > firstPublishTime)
+            if (k.tags.includes("esd") || k.tags.includes("Esd") || k.tags.includes("ESD")) {
+                // console.log(k.name)
+                (console.log("esd"))
+            }
+        }
         if (startDate < firstPublishTime && endDate > firstPublishTime) {
             if (k.tags.includes("world") || k.tags.includes("World")) {
                 if (k.tags.includes("social") || k.tags.includes("Social")) {
                     template.world_social.push(k)
+                    return
                 } else if (k.tags.includes("game") || k.tags.includes("Game")) {
                     template.world_game.push(k)
+                    return
                 } else if (k.tags.includes("misc") || k.tags.includes("Misc")) {
                     template.world_misc.push(k)
+                    return
                 }
-            } else if (k.tags.includes("avatar") || k.tags.includes("Avatar")) {
+            } 
+            if (k.tags.includes("avatar") || k.tags.includes("Avatar")) {
                 if (k.tags.includes("avatars") || k.tags.includes("Avatars")) {
                     template.avatar_avatars.push(k)
+                    return
                 } else if (k.tags.includes("accessories") || k.tags.includes("Accessories")) {
                     template.avatar_accessories.push(k)
+                    return
                 } else if (k.tags.includes("misc") || k.tags.includes("Misc")) {
                     template.avatar_misc.push(k)
+                    return
                 }
-            } else if (k.tags.includes("other") || k.tags.includes("Other")) {
+            }
+            if (k.tags.includes("other") || k.tags.includes("Other")) {
                 if (k.tags.includes("tau") || k.tags.includes("TAU")) {
                     template.other_tau.push(k)
+                    return
                 } else if (k.tags.includes("misc") || k.tags.includes("Misc")) {
                     template.other_misc.push(k)
+                    return
                 }
-            } else if (k.tags.includes("meme") || k.tags.includes("Meme")) {
+            }
+            if (k.tags.includes("meme") || k.tags.includes("Meme")) {
                 template.meme.push(k)
-            } else if (k.tags.includes("art") || k.tags.includes("Art")) {
+                return
+            } 
+            if (k.tags.includes("art") || k.tags.includes("Art")) {
                 template.art.push(k)
-            } else if (k.tags.includes("esd") || k.tags.includes("Esd") || k.tags.includes("ESD")) {
-
+                return
+            } 
+            if (k.tags.includes("esd") || k.tags.includes("Esd") || k.tags.includes("ESD")) {
+                // console.log(k.name)
                 template.esd.push(k)
+                return
             }
         }
     })
